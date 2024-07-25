@@ -1,46 +1,36 @@
 package com.invext.service;
 
-import com.invext.model.Atendente;
 import com.invext.model.Solicitacao;
-import com.invext.model.TimeAtendimento;
+import com.invext.queue.AtendimentoQueue;
+import com.invext.service.strategy.DistribuicaoStrategy;
+import com.invext.service.strategy.factory.DistribuicaoStrategyFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class SolicitacaoService {
 
-    private Map<String, TimeAtendimento> times;
+    private static final Logger logger = LoggerFactory.getLogger(SolicitacaoService.class);
 
-    public SolicitacaoService(){
-        times = new HashMap<>();
-        times.put("Cartões", new TimeAtendimento("Cartões"));
-        times.put("Empréstimos", new TimeAtendimento("Empréstimos"));
-        times.put("Outros Assuntos", new TimeAtendimento("Outros Assuntos"));
+    @Autowired
+    private AtendimentoQueue atendimentoQueue;
 
-        adicionarAtendente("Cartões", new Atendente("A1"));
-        adicionarAtendente("Empréstimos", new Atendente("A2"));
-        adicionarAtendente("Outros Assuntos", new Atendente("A3"));
-    }
-
-    private void adicionarAtendente(String time, Atendente atendente) {
-        times.get(time).adicionarAtendente(atendente);
-    }
+    @Autowired
+    private DistribuicaoStrategyFactory strategyFactory;
 
     public void distribuirSolicitacao(Solicitacao solicitacao) {
-        System.out.println(times.get("Cartões").getStatus());
-        String tipo = solicitacao.getTipo();
-        switch (tipo) {
-            case "Problemas com cartão":
-                times.get("Cartões").adicionarSolicitacao(solicitacao);
-                break;
-            case "Contratação de empréstimo":
-                times.get("Empréstimos").adicionarSolicitacao(solicitacao);
-                break;
-            default:
-                times.get("Outros Assuntos").adicionarSolicitacao(solicitacao);
-                break;
-        }
+        DistribuicaoStrategy strategy = strategyFactory.getStrategy(solicitacao.getTipo());
+        logger.debug("Distribuindo solicitação: {}", solicitacao.getId());
+        strategy.distribuir(solicitacao);
+        logger.debug("Solicitação distribuída: {}", solicitacao.getId());
+    }
+
+    public Solicitacao processarSolicitacao(String tipo) {
+        logger.debug("Processando solicitação do tipo: {}", tipo);
+        Solicitacao solicitacao = atendimentoQueue.processarSolicitacao(tipo);
+        logger.debug("Solicitação processada: {}", solicitacao);
+        return solicitacao;
     }
 }
