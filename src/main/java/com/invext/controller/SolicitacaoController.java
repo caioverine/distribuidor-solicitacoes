@@ -19,9 +19,10 @@ public class SolicitacaoController {
         solicitacaoService.distribuirSolicitacao(solicitacao);
         return ResponseEntity.ok().build();
     }
-    // TODO passar esse endpoint para o controller adequado
-    @PutMapping
-    public ResponseEntity<Void> finalizarAtendimento(@RequestBody Solicitacao solicitacao) {
-        return null;
+
+    @PostMapping("/processar")
+    public ResponseEntity<Solicitacao> processarSolicitacao(@RequestParam String tipo) {
+        Solicitacao solicitacao = solicitacaoService.processarSolicitacao(tipo);
+        return ResponseEntity.ok(solicitacao);
     }
 }
