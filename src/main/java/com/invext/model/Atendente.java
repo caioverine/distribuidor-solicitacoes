@@ -1,33 +1,43 @@
 package com.invext.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Atendente {
     private String id;
-    private AtomicInteger atendimentosAtuais;
+    private Queue<Solicitacao> solicitacoesEmAtendimento;
 
     public Atendente(String id) {
         this.id = id;
-        this.atendimentosAtuais = new AtomicInteger(0);
+        this.solicitacoesEmAtendimento = new LinkedList<>();
     }
 
     public String getId() {
         return id;
     }
 
-    public int getAtendimentosAtuais() {
-        return atendimentosAtuais.get();
+    public Queue<Solicitacao> getSolicitacoesEmAtendimento() {
+        return solicitacoesEmAtendimento;
     }
 
     public boolean podeAtender() {
-        return atendimentosAtuais.get() < 3;
+        return solicitacoesEmAtendimento.size() < 3;
     }
 
-    public void iniciarAtendimento() {
-        atendimentosAtuais.incrementAndGet();
+    public void adicionarSolicitacao(Solicitacao solicitacao) {
+        if(solicitacoesEmAtendimento.size() < 3) {
+            solicitacoesEmAtendimento.offer(solicitacao);
+        } else {
+            throw new RuntimeException("Atendente já está atendendo o máximo de solicitações.");
+        }
     }
 
-    public void finalizarAtendimento() {
-        atendimentosAtuais.decrementAndGet();
+    public void removerSolicitacao(Solicitacao solicitacao) {
+        solicitacoesEmAtendimento.remove(solicitacao);
+    }
+
+    @Override
+    public String toString() {
+        return "Atendente{id='" + id + "'}";
     }
 }

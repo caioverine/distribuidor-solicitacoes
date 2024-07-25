@@ -1,43 +1,40 @@
 package com.invext.model;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class TimeAtendimento {
-    private String nome;
-    private List<Atendente> atendentes;
-    private Queue<Solicitacao> filaEspera;
+    private TipoTimeAtendimentoEnum tipo;
+    private Queue<Atendente> atendentes;
 
-    public TimeAtendimento(String nome) {
-        this.nome = nome;
-        this.atendentes = new ArrayList<>();
-        this.filaEspera = new LinkedList<>();
+    public TimeAtendimento(TipoTimeAtendimentoEnum tipoTimeAtendimento) {
+        this.tipo = tipoTimeAtendimento;
+        this.atendentes = new LinkedList<>();
+    }
+
+    public TipoTimeAtendimentoEnum getTipo() {
+        return tipo;
+    }
+
+    public Queue<Atendente> getAtendentes() {
+        return atendentes;
     }
 
     public void adicionarAtendente(Atendente atendente) {
-        atendentes.add(atendente);
+        atendentes.offer(atendente);
     }
 
-    public void adicionarSolicitacao(Solicitacao solicitacao) {
+    public Atendente obterAtendenteDisponivel() {
         for (Atendente atendente : atendentes) {
-            System.out.println(atendente.getAtendimentosAtuais());
-            System.out.println(atendente.podeAtender());
             if (atendente.podeAtender()) {
-                atendente.iniciarAtendimento();
-                return;
+                return atendente;
             }
         }
-        filaEspera.add(solicitacao);
+        return null;
     }
 
-    public void liberarAtendente(Atendente atendente) {
-        atendente.finalizarAtendimento();
-        if (!filaEspera.isEmpty()) {
-            Solicitacao solicitacao = filaEspera.poll();
-            atendente.iniciarAtendimento();
-        }
-    }
-
-    public String getStatus() {
-        return String.format("Time: %s, Atendentes: %d, Fila de Espera: %d", nome, atendentes.size(), filaEspera.size());
+    @Override
+    public String toString() {
+        return "TimeAtendimento{tipo='" + tipo + "', atendentes=" + atendentes + "}";
     }
 }
