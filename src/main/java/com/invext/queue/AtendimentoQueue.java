@@ -59,6 +59,7 @@ public class AtendimentoQueue {
                     logger.debug("Processando solicitação com o atendente: {}", atendente);
                     Solicitacao solicitacao = atendente.getSolicitacoesEmAtendimento().poll();
                     logger.debug("Solicitação processada: {}", solicitacao.getId());
+                    verificaSolicitacoesNaFilaAtendimento(tipo);
                     return solicitacao;
                 } else {
                     logger.debug("Não há solicitações para serem processadas pelo atendente {}", atendente.getId());
@@ -66,6 +67,12 @@ public class AtendimentoQueue {
             }
         }
         return null;
+    }
+
+    private void verificaSolicitacoesNaFilaAtendimento(String tipo) {
+        if(!filaAtendimento.isEmpty() && !filaAtendimento.get(tipo).isEmpty()) {
+            adicionarSolicitacao(tipo, filaAtendimento.get(tipo).poll());
+        }
     }
 
     public void finalizarAtendimento(String tipo, Solicitacao solicitacao) {
