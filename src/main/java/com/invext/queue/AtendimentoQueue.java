@@ -75,17 +75,6 @@ public class AtendimentoQueue {
         }
     }
 
-    public void finalizarAtendimento(String tipo, Solicitacao solicitacao) {
-        logger.debug("Finalizando atendimento para solicitação: {}", solicitacao);
-        TimeAtendimento timeAtendimento = timesAtendimento.get(tipo);
-        if (timeAtendimento != null) {
-            for (Atendente atendente : timeAtendimento.getAtendentes()) {
-                atendente.removerSolicitacao(solicitacao);
-            }
-        }
-        logger.debug("Atendimento finalizado para solicitação: {}", solicitacao);
-    }
-
     public void adicionarTimeAtendimento(TimeAtendimento timeAtendimento) {
         timesAtendimento.put(timeAtendimento.getTipo().getValor(), timeAtendimento);
         logger.debug("Time de atendimento adicionado: {}", timeAtendimento.getTipo());
