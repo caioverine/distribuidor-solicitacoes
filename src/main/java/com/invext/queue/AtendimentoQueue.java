@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 @Component
 public class AtendimentoQueue {
@@ -30,12 +27,12 @@ public class AtendimentoQueue {
     public void adicionarSolicitacao(String tipo, Solicitacao solicitacao) {
         logger.debug("Adicionando solicitação à fila de atendimento: {}", solicitacao.getId());
         TimeAtendimento timeAtendimento = timesAtendimento.get(tipo);
-        if (timeAtendimento == null) {
+        if (Objects.isNull(timeAtendimento)) {
             filaAtendimento.get(tipo).offer(solicitacao);
             logger.debug("Solicitação adicionada à fila de tipo: {}", tipo);
         } else {
             Atendente atendente = timeAtendimento.obterAtendenteDisponivel();
-            if (atendente != null) {
+            if (Objects.nonNull(atendente)) {
                 try {
                     atendente.adicionarSolicitacao(solicitacao);
                     logger.debug("Solicitação atribuída ao atendente: {}", atendente.getId());
@@ -53,7 +50,7 @@ public class AtendimentoQueue {
     public Solicitacao processarSolicitacao(String tipo) {
         logger.debug("Processando solicitação do tipo: {}", tipo);
         TimeAtendimento timeAtendimento = timesAtendimento.get(tipo);
-        if (timeAtendimento != null) {
+        if (Objects.nonNull(timeAtendimento)) {
             logger.debug("Processando solicitação com o time: {}", timeAtendimento);
             for (Atendente atendente : timeAtendimento.getAtendentes()) {
                 if (!atendente.getSolicitacoesEmAtendimento().isEmpty()) {
