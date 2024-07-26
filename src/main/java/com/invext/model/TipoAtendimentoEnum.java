@@ -1,6 +1,6 @@
 package com.invext.model;
 
-public enum TipoTimeAtendimentoEnum {
+public enum TipoAtendimentoEnum {
 
     CARTOES("cartoes"),
     EMPRESTIMOS("emprestimos"),
@@ -8,7 +8,7 @@ public enum TipoTimeAtendimentoEnum {
 
     private final String valor;
 
-    TipoTimeAtendimentoEnum(String valor) {
+    TipoAtendimentoEnum(String valor) {
         this.valor = valor;
     }
 
@@ -16,8 +16,8 @@ public enum TipoTimeAtendimentoEnum {
         return this.valor;
     }
 
-    public static TipoTimeAtendimentoEnum fromValor(String valor) {
-        for (TipoTimeAtendimentoEnum tipo : values()) {
+    public static TipoAtendimentoEnum fromValor(String valor) {
+        for (TipoAtendimentoEnum tipo : values()) {
             if (tipo.valor.equalsIgnoreCase(valor)) {
                 return tipo;
             }

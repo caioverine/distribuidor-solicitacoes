@@ -4,15 +4,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class TimeAtendimento {
-    private TipoTimeAtendimentoEnum tipo;
+    private TipoAtendimentoEnum tipo;
     private Queue<Atendente> atendentes;
 
-    public TimeAtendimento(TipoTimeAtendimentoEnum tipoTimeAtendimento) {
+    public TimeAtendimento(TipoAtendimentoEnum tipoTimeAtendimento) {
         this.tipo = tipoTimeAtendimento;
         this.atendentes = new LinkedList<>();
     }
 
-    public TipoTimeAtendimentoEnum getTipo() {
+    public TipoAtendimentoEnum getTipo() {
         return tipo;
     }
 

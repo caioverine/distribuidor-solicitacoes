@@ -3,6 +3,7 @@ package com.invext.queue;
 import com.invext.model.Atendente;
 import com.invext.model.Solicitacao;
 import com.invext.model.TimeAtendimento;
+import com.invext.model.TipoAtendimentoEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,9 +22,9 @@ public class AtendimentoQueue {
     private Map<String, TimeAtendimento> timesAtendimento = new HashMap<>();
 
     public AtendimentoQueue() {
-        filaAtendimento.put("cartoes", new LinkedList<>());
-        filaAtendimento.put("emprestimos", new LinkedList<>());
-        filaAtendimento.put("outros", new LinkedList<>());
+        filaAtendimento.put(TipoAtendimentoEnum.CARTOES.getValor(), new LinkedList<>());
+        filaAtendimento.put(TipoAtendimentoEnum.EMPRESTIMOS.getValor(), new LinkedList<>());
+        filaAtendimento.put(TipoAtendimentoEnum.OUTROS.getValor(), new LinkedList<>());
     }
 
     public void adicionarSolicitacao(String tipo, Solicitacao solicitacao) {

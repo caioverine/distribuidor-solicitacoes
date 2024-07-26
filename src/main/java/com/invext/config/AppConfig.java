@@ -2,7 +2,7 @@ package com.invext.config;
 
 import com.invext.model.Atendente;
 import com.invext.model.TimeAtendimento;
-import com.invext.model.TipoTimeAtendimentoEnum;
+import com.invext.model.TipoAtendimentoEnum;
 import com.invext.queue.AtendimentoQueue;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +17,21 @@ public class AppConfig {
     @PostConstruct
     public void initializeTimesAndAtendentes() {
         // Inicializa Time de Atendimento Cartões
-        TimeAtendimento timeCartoes = new TimeAtendimento(TipoTimeAtendimentoEnum.CARTOES);
+        TimeAtendimento timeCartoes = new TimeAtendimento(TipoAtendimentoEnum.CARTOES);
         for (int i = 1; i <= 2; i++) {
             timeCartoes.adicionarAtendente(new Atendente("AtendenteCartoes-" + i));
         }
         atendimentoQueue.adicionarTimeAtendimento(timeCartoes);
 
         // Inicializa Time de Atendimento Empréstimos
-        TimeAtendimento timeEmprestimos = new TimeAtendimento(TipoTimeAtendimentoEnum.EMPRESTIMOS);
+        TimeAtendimento timeEmprestimos = new TimeAtendimento(TipoAtendimentoEnum.EMPRESTIMOS);
         for (int i = 1; i <= 1; i++) {
             timeEmprestimos.adicionarAtendente(new Atendente("AtendenteEmprestimos-" + i));
         }
         atendimentoQueue.adicionarTimeAtendimento(timeEmprestimos);
 
         // Inicializa Time de Atendimento Outros Assuntos
-        TimeAtendimento timeOutros = new TimeAtendimento(TipoTimeAtendimentoEnum.OUTROS);
+        TimeAtendimento timeOutros = new TimeAtendimento(TipoAtendimentoEnum.OUTROS);
         for (int i = 1; i <= 3; i++) {
             timeOutros.adicionarAtendente(new Atendente("AtendenteOutros-" + i));
         }
